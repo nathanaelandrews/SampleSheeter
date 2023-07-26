@@ -5,6 +5,7 @@ import re
 import glob
 import random
 import string
+import shutil
 
 print('''
  Engelab brings you:
@@ -102,9 +103,9 @@ def create_sample_sheet(folder_name):
             os.makedirs(output_folder)
         df.to_excel(output_folder + today_date + '_' + library_id + '.xlsx', index=False, header=False)
 
-        print("Sample sheet saved.\n")
+        print("Library added.\n")
     
-    print("All sample sheets created successfully.")
+    print("All libraries added successfully.")
 
 def create_sample_sheet_bea(num_samples, folder_name):
     initial_df = pd.DataFrame()  # create an initial empty dataframe
@@ -170,17 +171,18 @@ def main():
         if destination == "Novogene":
             create_sample_sheet(folder_name)
 
-            # Ask whether to merge files for Novogene samples
+            # We always merge 
             while True:
-                merge_option = input("Do you want to merge the files? (Y/N)")
+                merge_option = 'Y'
                 if merge_option in ['Y', 'N']:
                     break
                 else:
                     print("Invalid option. Please enter again.")
             if merge_option == 'Y':
-                merge_limit = input("How many files do you want to merge at once?")
-                output_name = input("Enter the output file name for merged file:")
+                merge_limit = input("How many libraries do you want to include per batch?")
+                output_name = input("Enter the output file name:")
                 merge_files(f'./sampleSheets/{folder_name}/*.xlsx', output_name, int(merge_limit))
+                shutil.rmtree(os.path.join('./sampleSheets', folder_name))
             break
 
         elif destination == "BEA":
@@ -188,8 +190,9 @@ def main():
             create_sample_sheet_bea(num_samples, folder_name)
 
             # BEA samples are always merged
-            output_name = input("Enter the output file name for merged file:")
+            output_name = input("Enter the output file name:")
             merge_files(f'./sampleSheets/{folder_name}/*.xlsx', output_name, 4)
+            shutil.rmtree(os.path.join('./sampleSheets', folder_name))
             break
 
         else:
