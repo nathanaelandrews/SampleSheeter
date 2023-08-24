@@ -8,5 +8,4 @@ To run Sample Sheeter:
 2. Follow the prompts.
 
 The final sequencing sheet(s) will be saved in the sampleSheets 
-folder. Sample sheets for individual libraries (plates) will 
-be saved in hidden subfolders of the sampleSheets folder.
+folder. 
